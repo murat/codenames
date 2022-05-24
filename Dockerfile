@@ -4,7 +4,7 @@ ENV GO111MODULE=on
 
 RUN apk add --no-cache git make
 
-WORKDIR /app
+WORKDIR /codenames
 
 COPY . .
 
@@ -12,6 +12,6 @@ RUN make build
 
 FROM alpine
 
-COPY --from=builder /app/bin/app /app
+COPY --from=builder /codenames/bin/codenames /codenames
 
-ENTRYPOINT [ "/app"]
+ENTRYPOINT [ "/codenames"]

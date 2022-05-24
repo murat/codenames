@@ -1,9 +1,9 @@
 version: '3.7'
 
 services:
-  app:
-    container_name: app
-    image: app:latest
+  codenames:
+    container_name: codenames
+    image: codenames:latest
     build:
       context: .
     healthcheck:
