@@ -1,11 +1,11 @@
-package main
+package game
 
 import (
 	"bufio"
 	"fmt"
-	"math/rand"
 	"os"
-	"time"
+
+	"github.com/murat/go-utils/slices"
 )
 
 // Game represents the state of the game
@@ -17,13 +17,13 @@ type Game struct {
 	Board  []string
 }
 
-func NewGame() (*Game, error) {
-	words, err := read()
+func NewGame(file string) (*Game, error) {
+	words, err := read(file)
 	if err != nil {
 		return nil, fmt.Errorf("could not read words, %w", err)
 	}
 
-	words = shuffle(words)
+	words = slices.Shuffle(words)
 
 	var picked []string
 	for i := 0; i < 25; i++ {
@@ -35,12 +35,16 @@ func NewGame() (*Game, error) {
 		Blue:   picked[9:17],
 		Yellow: picked[17:24],
 		Black:  picked[24:],
-		Board:  shuffle(picked),
+		Board:  slices.Shuffle(picked),
 	}, nil
 }
 
-func read() ([]string, error) {
-	f, err := os.Open("words.txt")
+func (g *Game) Render() {
+	fmt.Println(g)
+}
+
+func read(file string) ([]string, error) {
+	f, err := os.Open(file)
 	if err != nil {
 		return nil, fmt.Errorf("could not open file, %w", err)
 	}
@@ -58,15 +62,4 @@ func read() ([]string, error) {
 	}
 
 	return words, nil
-}
-
-func shuffle(vals []string) []string {
-	r := rand.New(rand.NewSource(time.Now().Unix()))
-	shuffled := make([]string, len(vals))
-	perm := r.Perm(len(vals))
-	for i, randIndex := range perm {
-		shuffled[i] = vals[randIndex]
-	}
-
-	return shuffled
 }
