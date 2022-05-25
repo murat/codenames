@@ -22,7 +22,7 @@ func Test_run(t *testing.T) {
 		{
 			name:    "unhappy path",
 			args:    []string{"not_exist.txt"},
-			wantErr: false,
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
