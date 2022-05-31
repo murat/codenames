@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/murat/codenames/protos";
+
+package protos;
+
+message GameRequest {
+  string File = 1;
+}
+
+message Card {
+  string Text = 1;
+}
+
+message Board {
+  repeated Card Black = 1;
+  repeated Card White = 2;
+  repeated Card Red = 3;
+  repeated Card Blue = 4;
+  repeated Card Cards = 5;
+}
+
+message Player {
+  string Name = 1;
+}
+
+message Team {
+  repeated Player Players = 1;
+}
+
+message Game {
+  string ID = 1;
+  Board Board = 2;
+  Team RedTeam = 3;
+  Team BlueTeam = 4;
+}
+
+message GameResponse {
+  Game Game = 1;
+}
+
+enum TEAM {
+  RED = 0;
+  BLUE = 1;
+}
+
+message JoinGameRequest {
+  string GameID = 1;
+  string Name = 2;
+  TEAM Team = 3;
+}
+
+service Codenames {
+  rpc CreateGame(GameRequest) returns (GameResponse) {};
+  rpc JoinGame(JoinGameRequest) returns (google.protobuf.Empty) {};
+}

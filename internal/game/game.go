@@ -3,6 +3,8 @@ package game
 import (
 	"bufio"
 	"fmt"
+	pb "github.com/murat/codenames/protos"
+	"log"
 	"os"
 
 	"github.com/murat/go-utils/slices"
@@ -10,11 +12,11 @@ import (
 
 // Game represents the state of the game
 type Game struct {
-	Red    []string
-	Blue   []string
-	Yellow []string
-	Black  []string
-	Board  []string
+	Red   []string
+	Blue  []string
+	White []string
+	Black []string
+	Cards []string
 }
 
 func NewGame(file string) (*Game, error) {
@@ -31,16 +33,31 @@ func NewGame(file string) (*Game, error) {
 	}
 
 	return &Game{
-		Red:    picked[:9],
-		Blue:   picked[9:17],
-		Yellow: picked[17:24],
-		Black:  picked[24:],
-		Board:  slices.Shuffle(picked),
+		Red:   picked[:9],
+		Blue:  picked[9:17],
+		White: picked[17:24],
+		Black: picked[24:],
+		Cards: slices.Shuffle(picked),
 	}, nil
 }
 
-func (g *Game) Render() {
-	fmt.Println(g)
+func (g *Game) ConvertToRequest() *pb.Board {
+	return &pb.Board{
+		Cards: convertToCards(g.Cards),
+		Black: convertToCards(g.Black),
+		White: convertToCards(g.White),
+		Red:   convertToCards(g.Red),
+		Blue:  convertToCards(g.Blue),
+	}
+}
+
+func convertToCards(words []string) []*pb.Card {
+	var cards []*pb.Card
+	for _, w := range words {
+		cards = append(cards, &pb.Card{Text: w})
+	}
+
+	return cards
 }
 
 func read(file string) ([]string, error) {
@@ -48,7 +65,12 @@ func read(file string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not open file, %w", err)
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		err := f.Close()
+		if err != nil {
+			log.Fatalf("could not close file, %v", err)
+		}
+	}(f)
 
 	scanner := bufio.NewScanner(f)
 
