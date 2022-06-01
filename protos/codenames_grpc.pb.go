@@ -8,7 +8,6 @@ package protos
 
 import (
 	context "context"
-	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -24,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CodenamesClient interface {
 	CreateGame(ctx context.Context, in *GameRequest, opts ...grpc.CallOption) (*GameResponse, error)
-	JoinGame(ctx context.Context, in *JoinGameRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	JoinGame(ctx context.Context, in *JoinGameRequest, opts ...grpc.CallOption) (*Game, error)
 }
 
 type codenamesClient struct {
@@ -44,8 +43,8 @@ func (c *codenamesClient) CreateGame(ctx context.Context, in *GameRequest, opts 
 	return out, nil
 }
 
-func (c *codenamesClient) JoinGame(ctx context.Context, in *JoinGameRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *codenamesClient) JoinGame(ctx context.Context, in *JoinGameRequest, opts ...grpc.CallOption) (*Game, error) {
+	out := new(Game)
 	err := c.cc.Invoke(ctx, "/protos.Codenames/JoinGame", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -58,7 +57,7 @@ func (c *codenamesClient) JoinGame(ctx context.Context, in *JoinGameRequest, opt
 // for forward compatibility
 type CodenamesServer interface {
 	CreateGame(context.Context, *GameRequest) (*GameResponse, error)
-	JoinGame(context.Context, *JoinGameRequest) (*empty.Empty, error)
+	JoinGame(context.Context, *JoinGameRequest) (*Game, error)
 	mustEmbedUnimplementedCodenamesServer()
 }
 
@@ -69,7 +68,7 @@ type UnimplementedCodenamesServer struct {
 func (UnimplementedCodenamesServer) CreateGame(context.Context, *GameRequest) (*GameResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateGame not implemented")
 }
-func (UnimplementedCodenamesServer) JoinGame(context.Context, *JoinGameRequest) (*empty.Empty, error) {
+func (UnimplementedCodenamesServer) JoinGame(context.Context, *JoinGameRequest) (*Game, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JoinGame not implemented")
 }
 func (UnimplementedCodenamesServer) mustEmbedUnimplementedCodenamesServer() {}

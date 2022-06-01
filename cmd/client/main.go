@@ -52,13 +52,24 @@ func main() {
 			fmt.Printf("%s ", card.Text)
 		}
 	case "join":
-		_, err := client.JoinGame(ctx, &pb.JoinGameRequest{
+		var t pb.TEAM
+		if team == "red" {
+			t = pb.TEAM_RED
+		} else if team == "blue" {
+			t = pb.TEAM_BLUE
+		} else {
+			t = 10
+		}
+		g, err := client.JoinGame(ctx, &pb.JoinGameRequest{
 			GameID: gameID,
 			Name:   player,
-			Team:   0,
+			Team:   t,
 		})
 		if err != nil {
 			log.Fatalf("could not join the game, %v", err)
 		}
+
+		fmt.Println(g.RedTeam.Players)
+		fmt.Println(g.BlueTeam.Players)
 	}
 }
