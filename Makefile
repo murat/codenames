@@ -1,5 +1,5 @@
 build: clean
-	GOARCH=amd64 GOOS=linux go build -o ./bin/codenames cmd/codenames/main.go
+	GOARCH=amd64 GOOS=linux go build -o ./bin/server cmd/server/main.go
 
 clean:
 	go clean
@@ -13,3 +13,8 @@ coverage:
 
 lint:
 	golangci-lint run ./... -c ./.golangci.yml
+
+generate:
+	protoc --go_out=. --go_opt=paths=source_relative \
+	   --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+	   protos/codenames.proto

@@ -1,4 +1,4 @@
-# go-boilerplate
+# codenames
 
-![Lint](https://github.com/murat/go-boilerplate/actions/workflows/lint.yml/badge.svg)
-![Tests](https://github.com/murat/go-boilerplate/actions/workflows/test.yml/badge.svg)
+![Lint](https://github.com/murat/codenames/actions/workflows/lint.yml/badge.svg)
+![Tests](https://github.com/murat/codenames/actions/workflows/test.yml/badge.svg)
