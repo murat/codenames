@@ -1,0 +1,4 @@
+github.com/go-chi/chi/v5 v5.0.7 h1:rDTPXLDHGATaeHvVlLcR4Qe0zftYethFucbjVQ1PxU8=
+github.com/go-chi/chi/v5 v5.0.7/go.mod h1:DslCQbL2OYiznFReuXYUmQ2hGd1aDpCnlMNITLSKoi8=
+github.com/murat/go-utils v0.0.0-20220525210053-d4539c7da3c7 h1:OoLhyL8p1ULeiffdkD9JZ/7jxRk4OelBB/aMj5PVWpc=
+github.com/murat/go-utils v0.0.0-20220525210053-d4539c7da3c7/go.mod h1:Wxx5opYGkwkicuTVNpwKmojkE4C0+bhi3hZNbK/N++A=
