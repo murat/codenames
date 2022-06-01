@@ -11,6 +11,7 @@ import (
 	pb "github.com/murat/codenames/protos"
 	"github.com/satori/go.uuid"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 // holds states of the games
@@ -76,6 +77,7 @@ func main() {
 	log.Println("listening on :8080")
 
 	gs := grpc.NewServer()
+	reflection.Register(gs) // Register reflection service on gRPC server.
 	pb.RegisterCodenamesServer(gs, &codenamesServer{})
 	if err := gs.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
